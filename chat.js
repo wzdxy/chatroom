@@ -1,9 +1,9 @@
 window.onload=function(){
             var name=User.getName();
             var id=User.getId();
-            var textInput=document.getElementById('text-input');
-            var sentBtn=document.getElementById('sent-btn');
-            var nameInput=document.getElementById('name-input');
+            var textInput=document.getElementById('text-input');//聊天内容输入
+            var sentBtn=document.getElementById('sent-btn');//发送按钮
+            var nameInput=document.getElementById('name-input');//昵称输入
             
             ws = new WebSocket("ws://127.0.0.1:2346");
             //ws=new WebSocket("ws://192.168.3.76:2346");
@@ -39,32 +39,32 @@ window.onload=function(){
 
 var User={
     getId:function () {        
-         if(!localStorage.getItem("userid")){            
+         if(!localStorage.getItem("userid")){                       //如果没有设置过则随机生成一个
             var id=Math.floor(Math.random()*999999+1);
             var nameInput=document.getElementById('name-input');
             nameInput.value='游客-' + id;
             localStorage.setItem('username','游客-'+id);
             localStorage.setItem('userid',id);
             return localStorage.getItem("userid");        
-        }else{
+        }else{                                                       //设置过，直接查询返回
             return localStorage.getItem("userid");
         }
            
     },
     getName:function () {
         var nameInput=document.getElementById('name-input');
-        if(!localStorage.getItem("username")){            
+        if(!localStorage.getItem("username")){                          //如果没有设置过则随机设置一个
             var id=Math.floor(Math.random()*99999+1);            
             nameInput.value='游客-' + id;
             localStorage.setItem('username','游客-'+id);
             return localStorage.getItem("username");        
-        }else{
+        }else{                                                          //设置过，修改昵称显示并返回
             nameInput.value=localStorage.getItem("username");
             return localStorage.getItem("username");
         }     
     },
     changeName:function (newName) {
-        localStorage.setItem('username',newName);          
+        localStorage.setItem('username',newName);                         
     }
 }
 
