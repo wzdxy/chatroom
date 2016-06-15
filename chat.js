@@ -1,25 +1,25 @@
 window.onload=function(){
+            var name=User.getName();
+            var id=User.getId();
             
-            //ws = new WebSocket("ws://127.0.0.1:2346");
-            ws=new WebSocket("ws://192.168.3.76:2346");
-            var id=Math.floor(Math.random()*99999+1);
-            var nameInput=document.getElementById('name-input');
-            nameInput.value='游客-' + id;
+            ws = new WebSocket("ws://127.0.0.1:2346");
+            //ws=new WebSocket("ws://192.168.3.76:2346");
+            
             
             ws.onopen = function() {
-                userOnline(id,nameInput.value);
+                userOnline(id,name);
             };
             
             ws.onmessage = function(e) {
                 innerChat(e);             
             }
             
-            textInput=document.getElementById('text-input');
-            sentBtn=document.getElementById('sent-btn');
+            var textInput=document.getElementById('text-input');
+            var sentBtn=document.getElementById('sent-btn');
             
-            textInput.addEventListener('keydown',function (event) {
+            textInput.addEventListener('keypress',function (event) {
                 if(event.keyCode==13){
-                    sendMessage(id,nameInput.value,textInput.value);
+                    sendMessage(id,name,textInput.value);
                     textInput.value='';   
                 }
             })
@@ -35,6 +35,45 @@ window.onload=function(){
             }
                         
        };
+
+var User={
+    
+    getId:function () {
+         if(!localStorage.getItem("userid")){            
+            var id=Math.floor(Math.random()*99999+1);
+            var nameInput=document.getElementById('name-input');
+            nameInput.value='游客-' + id;
+            localStorage.setItem('username','游客-'+id);
+            localStorage.setItem('userid',id);        
+        }
+        return localStorage.getItem("userid");   
+    },
+    getName:function () {
+        if(!localStorage.getItem("username")){            
+            var id=Math.floor(Math.random()*99999+1);
+            var nameInput=document.getElementById('name-input');
+            nameInput.value='游客-' + id;
+            localStorage.setItem('username','游客-'+id);
+            localStorage.setItem('userid',id);        
+        }
+        return localStorage.getItem("username");
+        
+    }
+}
+
+
+function userName() {
+        if(!localStorage.getItem("username")){            
+            var id=Math.floor(Math.random()*99999+1);
+            var nameInput=document.getElementById('name-input');
+            nameInput.value='游客-' + id;
+            localStorage.setItem('username','游客-'+id);        
+        }
+        return localStorage.getItem("username");
+        
+    
+    
+}       
 function sendMessage(id,name,text) {
     var message=new Object();
     message.type='speak';
